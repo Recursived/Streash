@@ -1,6 +1,6 @@
 # Compiled class file
 *.class
-bin/*
+streash/bin/*
 
 # Log file
 *.log
@@ -25,7 +25,7 @@ hs_err_pid*
 
 # IDE FILES
 
-.classpath
-.project
+streash/.classpath
+streash/.project
 _classpath.xml
 _project.xml
