@@ -5,14 +5,12 @@ import streash.variables.command.AbstractCommand;
 
 public class Shuffle extends AbstractCommand {
 
-	public Shuffle(int maxArg) {
-		super(maxArg);
-		// TODO Auto-generated constructor stub
+	public Shuffle() {
+		super(2); // Un stream et un Rational
 	}
 
 	@Override
 	public Variable process() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
