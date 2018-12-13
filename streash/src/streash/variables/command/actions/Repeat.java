@@ -5,8 +5,8 @@ import streash.variables.command.AbstractCommand;
 
 public class Repeat extends AbstractCommand {
 
-	public Repeat(int maxArg) {
-		super(maxArg);
+	public Repeat() {
+		super(2, "Repeat");
 		// TODO Auto-generated constructor stub
 	}
 

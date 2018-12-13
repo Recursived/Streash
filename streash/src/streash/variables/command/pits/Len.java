@@ -7,7 +7,7 @@ import streash.variables.command.AbstractCommand;
 public class Len extends AbstractCommand {
 
 	public Len() {
-		super(1);
+		super(1, "Len");
 	}
 
 	@Override

@@ -9,7 +9,7 @@ import streash.variables.stream.FiboStream;
 public class FiboCommand extends AbstractCommand {
 
 	public FiboCommand() {
-		super(2);
+		super(2, "Fibo");
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import streash.variables.command.AbstractCommand;
 public class Average extends AbstractCommand {
 
 	public Average() {
-		super(1);
+		super(1, "Average");
 	}
 
 	@Override

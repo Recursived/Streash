@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -16,6 +19,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 
+import streash.variables.Rational;
+import streash.variables.Variable;
+import streash.variables.command.Command;
+import streash.variables.command.CommandFactory;
+
 public class ConsoleFrame extends JFrame {  
 	/* 
 	 * Classe reprÃ©sentant la console streash
@@ -23,7 +31,7 @@ public class ConsoleFrame extends JFrame {
 	 * et d'un display field 
 	 */
 	
-	
+	// Composant graphique
 	private ConsoleInput ci;
 	private ConsolePanel cp;
 	private JScrollPane scrollpane;
@@ -31,6 +39,11 @@ public class ConsoleFrame extends JFrame {
 	private JMenu menu;
 	private JMenuItem save;
 	private JMenuItem importe;
+	
+	// Composants fonctionnels
+	private static int compteur_temp = 0;
+	private Map<String, Variable> vars = new HashMap<String, Variable>();
+	private Stack<Variable> stack = new Stack<Variable>();
 	
 	public static void main(String[] args) {
 		new ConsoleFrame();
@@ -107,6 +120,7 @@ public class ConsoleFrame extends JFrame {
 			}
 			
 		});
+		
 		this.save.addKeyListener(new KeyListener() {
 
 			@Override
@@ -141,6 +155,7 @@ public class ConsoleFrame extends JFrame {
 			}
 			
 		});
+		
 		this.importe.addKeyListener(new KeyListener() {
 
 			@Override
@@ -165,7 +180,6 @@ public class ConsoleFrame extends JFrame {
 		});
 	}
 	
-	
 	// Listeners pour les differents classes
 	class ConsoleInputListener implements KeyListener {
 
@@ -173,19 +187,27 @@ public class ConsoleFrame extends JFrame {
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 				// Si la string n'est pas vide on fait le traitement
-				String command = ci.getText();
-				if (command.length() > 0) {
-					cp.append(ci.getText()+"\n");
-					ci.setText("");
-					//On analyse avec le parsing
-					//Puis on affichage le rÃ©sultat
+				String line = ci.getText();
+				if (line.length() > 0) {
+					// Analayse de la chaine et traitement
+					if (this.isAffectation(line)) {
+						this.process(line, 0);
+					} else if (this.isTempAffectation(line)) {
+						this.process(line, 1);
+					} else {
+						cp.append(">> Syntax error : incorrect affectation\n");
+						ci.setText("");
+					}
 				} else {
 					// On reinitialise le console input
+					cp.append(">> You should type something before sending\n");
 					ci.setText("");
 				}
 			}
 		}
-
+		
+		
+		
 		@Override
 		public void keyReleased(KeyEvent e) {
 			// TODO Auto-generated method stub
@@ -198,5 +220,117 @@ public class ConsoleFrame extends JFrame {
 			
 		}
 		
+		// Helper function
+		private boolean isNumerical(String expr) {
+			return expr.matches("(-)?[0-9]*(/(-)?[0-9]*)?");
+		}
+		
+		private boolean isAlpha(String expr) {
+			return expr.matches("[a-zA-Z]{1}[a-zA-Z0-9_]*");
+		}
+		
+		private boolean isAffectation(String expr) {
+			return expr.matches("^[a-zA-Z]{1}[a-zA-Z0-9_]* = .*");
+		}
+		
+		private boolean isTempAffectation(String expr) {
+			return expr.matches("^(-)?[0-9]*(/(-)?[0-9]*)? .*");
+		}
+		
+		private boolean isCommand(String expr) {
+			return expr.matches("<[a-z][a-z]*>");
+			
+		}
+		
+		private void process(String line, int type) {
+			try {
+				stack.clear();
+				if (type == 0) {
+					String[] token = line.split(" ");
+					String var = token[0];
+					// On commence après le token egal
+					for (int i = 2; i < token.length; i++) {
+						// si cest une ref à une autre var
+						System.out.println(stack);
+						if (this.isAlpha(token[i])) {
+							Variable a = vars.get(token[i]);
+							stack.push(a);
+						// si cest un nombre
+						}  else if (this.isNumerical(token[i])) {
+							Variable n = Rational.parseRational(token[i]);
+							stack.push(n);
+						// si c'est une commande
+						} else if (this.isCommand(token[i])) {
+							Command c  = CommandFactory.createCommand(token[i]);
+							// mauvaise ecriture de commande
+							if (c == null) {
+								cp.append("Unknown command : "+ token[i] +"\n");
+							}
+							System.out.println("stack : " + stack);
+							System.out.println(stack.size());
+							for (int j = 0; j < c.nbArgs(); j++) {
+								c.takeArg(stack.pop());
+								
+							}
+							stack.push(c.process());
+							c.displayCommandArgs();
+						} else {
+							cp.append(">> Syntax error : wrong token '"+token[i]+"'\n");
+							ci.setText("");
+						}
+					}
+					Variable to_insert = stack.pop();
+					cp.append(var + " : " +to_insert.getConsoleString()+"\n");
+					ci.setText("");
+					vars.put(var, to_insert);
+				} else if ( type == 1) {
+					String[] token = line.split(" ");
+					for (int i = 0; i < token.length; i++) {
+						System.out.println(token[i]);
+						// si cest une ref à une autre var
+						if (this.isAlpha(token[i])) {
+							Variable a = vars.get(token[i]);
+							stack.push(a);
+						// si cest un nombre
+						}  else if (this.isNumerical(token[i])) {
+							Variable n = Rational.parseRational(token[i]);
+							stack.push(n);
+						// si c'est une commande
+						} else if (this.isCommand(token[i])) {
+							Command c  = CommandFactory.createCommand(token[i]);
+							// mauvaise ecriture de commande
+							if (c == null) {
+								cp.append("Unknown command : "+ token[i] +"\n");
+							}
+							System.out.println("stack : " + stack);
+							System.out.println(stack.size());
+							System.out.println(c.nbArgs());
+							for (int j = 0; j < c.nbArgs(); j++) {
+								c.takeArg(stack.pop());
+							}
+							stack.push(c.process());
+							c.displayCommandArgs();
+						} else {
+							cp.append(">> Syntax error : wrong token '"+token[i]+"'\n");
+							ci.setText("");
+						}
+					}
+					Variable to_insert = stack.pop();
+					cp.append("temp" + compteur_temp + " : " + to_insert.getConsoleString()+"\n");
+					ci.setText("");
+					vars.put("temp" + compteur_temp, to_insert);
+					compteur_temp++;
+				}
+			} catch (RuntimeException e) {
+				cp.append(" >> " + e.getMessage() + "\n");
+				ci.setText("");
+				
+				// debug
+				System.out.println(e);
+			}
+		}
+		
 	}
+	
+	
 }

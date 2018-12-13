@@ -7,7 +7,7 @@ import streash.variables.command.AbstractCommand;
 public class Sort extends AbstractCommand {
 
 	public Sort() {
-		super(1);
+		super(1, "Sort");
 	}
 
 	@Override

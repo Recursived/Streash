@@ -7,7 +7,7 @@ import streash.variables.command.AbstractCommand;
 public class Min extends AbstractCommand {
 
 	public Min() {
-		super(1);
+		super(1, "Min");
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import streash.variables.command.AbstractCommand;
 public class Mul extends AbstractCommand {
 
 	public Mul() {
-		super(2);
+		super(2, "Mul");
 	}
 
 	@Override

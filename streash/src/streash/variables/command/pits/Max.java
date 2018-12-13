@@ -7,7 +7,7 @@ import streash.variables.command.AbstractCommand;
 public class Max extends AbstractCommand{
 
 	public Max() {
-		super(1);
+		super(1, "Max");
 	}
 
 	@Override

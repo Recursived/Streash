@@ -8,7 +8,7 @@ import streash.variables.stream.RevIntegerStream;
 public class RevintegerCommand extends AbstractCommand {
 
 	public RevintegerCommand() {
-		super(1);
+		super(1, "Revinteger");
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import streash.variables.command.AbstractCommand;
 public class Concat extends AbstractCommand {
 
 	public Concat() {
-		super(2);
+		super(2, "Concat");
 	}
 
 	@Override

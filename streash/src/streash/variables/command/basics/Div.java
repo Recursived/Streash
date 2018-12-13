@@ -7,7 +7,7 @@ import streash.variables.command.AbstractCommand;
 public class Div extends AbstractCommand {
 
 	public Div() {
-		super(2);
+		super(2, "Div");
 		}
 
 	@Override

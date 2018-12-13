@@ -7,8 +7,8 @@ import streash.variables.command.AbstractCommand;
 
 public class Slice extends AbstractCommand {
 
-	public Slice(int maxArg) {
-		super(3);
+	public Slice() {
+		super(3, "Slice");
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class Slice extends AbstractCommand {
 				Rational r2 = (Rational) arr[1];
 				VarStream s = (VarStream) arr[2];
 				if (r.isInteger() && r2.isInteger()) {
-					s.slice(r.intValue(), r2.intValue());
+					s.slice(r2.intValue(), r.intValue());
 					return s;
 				} else {
 					throw new IllegalArgumentException("Args should be Integer");

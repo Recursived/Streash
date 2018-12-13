@@ -7,7 +7,7 @@ import streash.variables.command.AbstractCommand;
 public class Print extends AbstractCommand {
 
 	public Print() {
-		super(1);
+		super(1, "Print");
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import streash.variables.stream.RandomStream;
 public class RandomCommand extends AbstractCommand{
 
 	public RandomCommand() {
-		super(3);
+		super(3, "Random");
 	}
 
 	@Override
@@ -22,7 +22,7 @@ public class RandomCommand extends AbstractCommand{
 				if (r.isInteger() && r2.isInteger() && r3.isInteger()) {
 					return new RandomStream(r.intValue(), r2.intValue(), r3.intValue());
 				} else {
-					throw new IllegalArgumentException("arg should be an int");
+					throw new IllegalArgumentException("Arg for this command should be ints");
 				}
 			}
 		}

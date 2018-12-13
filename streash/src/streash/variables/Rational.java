@@ -146,4 +146,16 @@ public class Rational extends Number implements Comparable<Rational>, Variable{
 	public String getConsoleString() {
 		return this.toString();
 	}
+	
+	public static Rational parseRational(String expr) {
+		String[] arr = expr.split("/");
+		if (arr.length > 2){
+			throw new IllegalArgumentException("Invalid syntax for Rational");
+		}
+		
+		if (arr.length == 1) return new Rational(BigInteger.valueOf(Long.parseLong(arr[0])));
+		
+		return new Rational(BigInteger.valueOf(Long.parseLong(arr[0])), BigInteger.valueOf(Long.parseLong(arr[1])));
+		
+	}
 }

@@ -7,7 +7,7 @@ import streash.variables.command.AbstractCommand;
 public class Sum extends AbstractCommand  {
 
 	public Sum() {
-		super(1);
+		super(1, "Sum");
 	}
 
 	@Override

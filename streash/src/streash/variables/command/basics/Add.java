@@ -7,7 +7,7 @@ import streash.variables.command.AbstractCommand;
 public class Add extends AbstractCommand {
 
 	public Add() {
-		super(2);
+		super(2, "Add");
 	}
 
 	@Override

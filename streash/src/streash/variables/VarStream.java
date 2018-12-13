@@ -71,6 +71,7 @@ public interface VarStream extends Variable {
 	// Stream's treatment
 	
 	default void slice(int inf, int sup) {
+		System.out.println("in slice" + inf + " " + sup);
 		if (inf > sup ) {
 			throw new IllegalArgumentException("left bound cannot be superior to left bound");
 		}

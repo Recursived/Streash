@@ -7,7 +7,7 @@ import streash.variables.command.AbstractCommand;
 public class Inter extends AbstractCommand {
 
 	public Inter() {
-		super(2);
+		super(2, "Inter");
 	}
 
 	@Override

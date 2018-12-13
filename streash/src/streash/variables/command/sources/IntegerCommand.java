@@ -8,7 +8,7 @@ import streash.variables.stream.IntegerStream;
 public class IntegerCommand extends AbstractCommand {
 
 	public IntegerCommand() {
-		super(1);
+		super(1, "Integer");
 	}
 
 	@Override
@@ -20,7 +20,7 @@ public class IntegerCommand extends AbstractCommand {
 				if (r.isInteger()) {
 					return new IntegerStream(r.intValue());
 				} else {
-					throw new IllegalArgumentException("arg should be an int");
+					throw new IllegalArgumentException("Arg should be an int");
 				}
 			}
 		}
