@@ -7,7 +7,13 @@ public enum VarType {
 	IntegerStream("IntegerStream", "<integer>"),
 	FiboStream("FiboStream", "<fibo>"),
 	RandomStream("RandomStream", "<random>"),
-	RevInteger("RevIntegerStream", "<revinteger");
+	RevInteger("RevIntegerStream", "<revinteger"),
+	SliceStream("SliceStream", "<slice>"),
+	ConcatStream("ConcatStream", "<concat>"),
+	InterStream("InterStream", "<inter>"),
+	RepeatStream("RepeatStream", "<repeat>"),
+	ShuffleStream("ShuffleStream", "<shuffle>"),
+	SortStream("SortStream","<sort>");
 	// Rajouter les manquants quand vous les faites
 	
 	

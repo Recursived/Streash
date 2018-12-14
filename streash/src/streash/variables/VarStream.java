@@ -75,7 +75,7 @@ public interface VarStream extends Variable {
 		if (inf > sup ) {
 			throw new IllegalArgumentException("left bound cannot be superior to left bound");
 		}
-		this.setStream(this.getCopy().getStream().skip((long) inf).limit(sup-inf));
+		this.setStream(this.getStream().skip((long) inf).limit(sup-inf));
 	}
 	
 	default void repeat(Rational rat) {
@@ -83,13 +83,12 @@ public interface VarStream extends Variable {
 	}
 	
 	default void concat(VarStream s) {
-		this.setStream(Stream.concat(this.getCopy().getStream(), s.getCopy().getStream()));
+		this.setStream(Stream.concat(this.getStream(), s.getCopy().getStream()));
 	}
 	
 	default void inter(VarStream vs) {
 		this.setStream(
-			this.getCopy()
-			.getStream()
+			this.getStream()
 			.filter( 
 					me -> vs.getStream()
 					.anyMatch( vsv -> me.equals(vsv))
@@ -97,11 +96,11 @@ public interface VarStream extends Variable {
 	}
 	
 	default void sort() {
-		this.setStream(this.getCopy().getStream().sorted());;
+		this.setStream(this.getStream().sorted());;
 	}
 	
 	default void shuffle(int seed) {
-		List<Variable> lst = this.getCopy().getStream().collect(Collectors.toList());
+		List<Variable> lst = this.getStream().collect(Collectors.toList());
 		Collections.shuffle(lst, new Random(seed));
 		this.setStream(lst.stream());
 	}

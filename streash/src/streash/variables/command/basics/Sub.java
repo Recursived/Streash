@@ -17,7 +17,7 @@ public class Sub extends AbstractCommand {
 			if (arr[0] instanceof Rational && arr[1] instanceof Rational) {
 				Rational r = (Rational) arr[0];
 				Rational r2 = (Rational) arr[1];
-				return r.sub(r2);
+				return r2.sub(r);
 			} else {
 				throw new IllegalArgumentException("Args of command should be Rationals");
 			}

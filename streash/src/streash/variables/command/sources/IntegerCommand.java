@@ -22,6 +22,8 @@ public class IntegerCommand extends AbstractCommand {
 				} else {
 					throw new IllegalArgumentException("Arg should be an int");
 				}
+			} else {
+				throw new IllegalArgumentException("Arg should be a Rational");
 			}
 		}
 		return null;

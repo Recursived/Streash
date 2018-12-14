@@ -40,6 +40,7 @@ public class Slice extends AbstractCommand {
 				Rational r2 = (Rational) arr[1];
 				VarStream s = (VarStream) arr[2];
 				if (r.isInteger() && r2.isInteger()) {
+					System.out.println("ici");
 					s.slice(r2.intValue(), r.intValue());
 					return s;
 				} else {
