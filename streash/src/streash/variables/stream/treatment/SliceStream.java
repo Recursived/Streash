@@ -11,13 +11,16 @@ public class SliceStream implements VarStream {
 	private final int inf;
 	private final int sup;
 	private VarStream stream;
-	private VarType type = VarType.SliceStream;
+	private final VarType type = VarType.SliceStream;
 	
 	public SliceStream(int inf, int sup, VarStream s ) {
 		// Verifier si on lance l'erreur
+		if (inf > sup ) {
+			throw new IllegalArgumentException("left bound cannot be superior to left bound");
+		}
 		this.inf = inf;
 		this.sup = sup;
-		this.stream = s.getCopy();
+		this.stream = s;
 	}
 
 	@Override
@@ -28,24 +31,21 @@ public class SliceStream implements VarStream {
 	@Override
 	public String getConsoleString() {
 		// TODO Auto-generated method stub
-		return this.type + " ranging from " + this.inf + " to " + this.sup;
+		return this.type + " ranging from " + this.inf + " to " + this.sup + " of " + this.stream.getConsoleString();
 	}
 
 	@Override
 	public VarStream getCopy() {
-		return new SliceStream(this.inf, this.sup, this.stream.getCopy());
+		System.out.println("in getcopy of slice");
+		return new SliceStream(this.inf, this.sup, this.stream);
 	}
 
 	@Override
 	public Stream<Variable> getStream() {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println("in getstream of slice");
+		return this.stream.getCopy().getStream().skip((long) inf).limit(sup-inf);
 	}
 
-	@Override
-	public void setStream(Stream<Variable> stream) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 }

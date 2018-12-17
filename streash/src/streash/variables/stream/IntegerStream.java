@@ -36,10 +36,6 @@ public class IntegerStream implements VarStream {
 		return this.stream;
 	}
 
-	@Override
-	public void setStream(Stream<Variable> stream) {
-		this.stream = stream;
-		
-	}
+
 
 }

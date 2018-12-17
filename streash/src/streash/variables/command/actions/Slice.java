@@ -4,6 +4,7 @@ import streash.variables.Rational;
 import streash.variables.VarStream;
 import streash.variables.Variable;
 import streash.variables.command.AbstractCommand;
+import streash.variables.stream.treatment.SliceStream;
 
 public class Slice extends AbstractCommand {
 
@@ -20,8 +21,7 @@ public class Slice extends AbstractCommand {
 				Rational r = (Rational) arr[1];
 				Rational r2 = (Rational) arr[2];
 				if (r.isInteger() && r2.isInteger()) {
-					s.slice(r.intValue(), r2.intValue());
-					return s;
+					return new SliceStream(r2.intValue(), r.intValue(), s);
 				} else {
 					throw new IllegalArgumentException("Args should be Integer");
 				}
@@ -30,8 +30,7 @@ public class Slice extends AbstractCommand {
 				VarStream s = (VarStream) arr[1];
 				Rational r2 = (Rational) arr[2];
 				if (r.isInteger() && r2.isInteger()) {
-					s.slice(r.intValue(), r2.intValue());
-					return s;
+					return new SliceStream(r2.intValue(), r.intValue(), s);
 				} else {
 					throw new IllegalArgumentException("Args should be Integer");
 				}
@@ -40,9 +39,7 @@ public class Slice extends AbstractCommand {
 				Rational r2 = (Rational) arr[1];
 				VarStream s = (VarStream) arr[2];
 				if (r.isInteger() && r2.isInteger()) {
-					System.out.println("ici");
-					s.slice(r2.intValue(), r.intValue());
-					return s;
+					return new SliceStream(r2.intValue(), r.intValue(), s);
 				} else {
 					throw new IllegalArgumentException("Args should be Integer");
 				}

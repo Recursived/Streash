@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -294,7 +295,6 @@ public class ConsoleFrame extends JFrame {
 					// On commence après le token egal
 					for (int i = 2; i < token.length; i++) {
 						// si cest une ref à une autre var
-						System.out.println(stack);
 						if (this.isAlpha(token[i])) {
 							Variable a = vars.get(token[i]);
 							stack.push(a);
@@ -309,14 +309,12 @@ public class ConsoleFrame extends JFrame {
 							if (c == null) {
 								cp.append("Unknown command : "+ token[i] +"\n");
 							}
-							System.out.println("stack : " + stack);
-							System.out.println(stack.size());
 							for (int j = 0; j < c.nbArgs(); j++) {
 								c.takeArg(stack.pop());
 								
 							}
-							stack.push(c.process());
 							c.displayCommandArgs();
+							stack.push(c.process());
 						} else {
 							cp.append(">> Syntax error : wrong token '"+token[i]+"'\n");
 							ci.setText("");
@@ -347,9 +345,6 @@ public class ConsoleFrame extends JFrame {
 							if (c == null) {
 								cp.append("Unknown command : "+ token[i] +"\n");
 							}
-							System.out.println("stack : " + stack);
-							System.out.println(stack.size());
-							System.out.println(c.nbArgs());
 							for (int j = 0; j < c.nbArgs(); j++) {
 								c.takeArg(stack.pop());
 							}
@@ -374,6 +369,8 @@ public class ConsoleFrame extends JFrame {
 							+ "\n The format should be : "
 							+ "1 _ . _ <command> _ . _ .)"
 							+ "\n Zero whitespace at the begining and one after each elem");
+				} else if (e instanceof EmptyStackException) {
+					cp.append(">> Not enough args for this command");
 				} else {
 					cp.append(" >> " + e.getMessage() + "\n");
 				}

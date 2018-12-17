@@ -1,9 +1,7 @@
+
 package streash.variables;
 
 import java.math.BigInteger;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -13,7 +11,6 @@ public interface VarStream extends Variable {
 	// Miscelleanous
 	VarStream getCopy();
 	Stream<Variable> getStream();
-	void setStream(Stream<Variable> stream);
 	
 	// Pit
 	default Rational len() {
@@ -65,43 +62,7 @@ public interface VarStream extends Variable {
 		return new Chaine(this.getCopy()
 				.getStream()
 				.map(n -> n.toString())
-				.collect(Collectors.joining(",")));
+				.collect(Collectors.joining(", ")));
 	}
 	
-	// Stream's treatment
-	
-	default void slice(int inf, int sup) {
-		System.out.println("in slice" + inf + " " + sup);
-		if (inf > sup ) {
-			throw new IllegalArgumentException("left bound cannot be superior to left bound");
-		}
-		this.setStream(this.getStream().skip((long) inf).limit(sup-inf));
-	}
-	
-	default void repeat(Rational rat) {
-		// TO DO
-	}
-	
-	default void concat(VarStream s) {
-		this.setStream(Stream.concat(this.getStream(), s.getCopy().getStream()));
-	}
-	
-	default void inter(VarStream vs) {
-		this.setStream(
-			this.getStream()
-			.filter( 
-					me -> vs.getStream()
-					.anyMatch( vsv -> me.equals(vsv))
-					));
-	}
-	
-	default void sort() {
-		this.setStream(this.getStream().sorted());;
-	}
-	
-	default void shuffle(int seed) {
-		List<Variable> lst = this.getStream().collect(Collectors.toList());
-		Collections.shuffle(lst, new Random(seed));
-		this.setStream(lst.stream());
-	}
 }

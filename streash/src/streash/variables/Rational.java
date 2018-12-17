@@ -19,7 +19,7 @@ public class Rational extends Number implements Comparable<Rational>, Variable{
 	public Rational(BigInteger numerator, BigInteger denominator) {
 		this.numerator = Objects.requireNonNull(numerator);
 		if (denominator.equals(BigInteger.valueOf(0))){
-			throw new ArithmeticException("Division par zero");
+			throw new ArithmeticException("Division by zero is impossible");
 		}
 		this.denominator = Objects.requireNonNull(denominator);
 	}
@@ -51,7 +51,8 @@ public class Rational extends Number implements Comparable<Rational>, Variable{
 	
 	@Override
 	public String toString() {
-		return this.numerator.toString() + "/" + this.denominator;
+		String denom = this.denominator.equals(BigInteger.valueOf(1)) ? "" : "/" + this.denominator;
+		return this.numerator.toString() + denom;
 	}
 	
 	public Rational simplify() {
