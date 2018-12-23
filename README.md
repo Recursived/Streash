@@ -10,7 +10,7 @@ In this section, you will be given all the command you can use.
 
 ### Commands
 
-* <integers> : create a stream of integers
+* \<integers\> : create a stream of integers
 * <revintegers> : create a reverse stream of integers
 * <fibo> : create a stream following the fibonnaci sequence
 * <random> : create a stream with randomly generated element
