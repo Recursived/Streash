@@ -19,4 +19,9 @@ public class Chaine implements Variable {
 		return this.str;
 	}
 
+
+	public static int compare(Chaine a1, Chaine b1) {
+		return  a1.str.compareTo(b1.str);
+	}
+
 }

@@ -8,7 +8,7 @@ import streash.variables.Variable;
 
 public class SortStream implements VarStream{
 	private final VarType type = VarType.SortStream;
-	private VarStream stream;
+	private final VarStream stream;
 	
 	public SortStream(VarStream stream) {
 		this.stream = stream.getCopy();
@@ -31,6 +31,11 @@ public class SortStream implements VarStream{
 
 	@Override
 	public Stream<Variable> getStream() {
-		return this.getCopy().getStream().sorted();
+		return this.stream.getCopy().getStream().sorted();
+	}
+
+	@Override
+	public boolean isFinite() {
+		return true;
 	}
 }

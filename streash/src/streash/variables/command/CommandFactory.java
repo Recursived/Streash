@@ -24,6 +24,8 @@ public class CommandFactory {
 			case "<inter>":
 				return new Inter();
 			// Il faut ajouter repeat quand il sera fait
+			case "<repeat>":
+				return new Repeat();
 			case "<shuffle>":
 				return new Shuffle();
 			case "<slice>":

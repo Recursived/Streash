@@ -11,6 +11,7 @@ public interface VarStream extends Variable {
 	// Miscelleanous
 	VarStream getCopy();
 	Stream<Variable> getStream();
+	boolean isFinite();
 	
 	// Pit
 	default Rational len() {
@@ -40,18 +41,19 @@ public interface VarStream extends Variable {
 	default Variable min() {
 		return this.getCopy()
 				.getStream()
-				.min(null)
+				.min(Variable::compare)
 				.get();
 	}
 	
 	default Variable max() {
 		return this.getCopy()
 				.getStream()
-				.max(null)
+				.max(Variable::compare)
 				.get();
 	}
 	
 	default Variable get(int i) {
+		System.out.println(this.getCopy().getStream().collect(Collectors.toList()));
 		return this.getCopy()
 				.getStream()
 				.collect(Collectors.toList())

@@ -36,6 +36,11 @@ public class IntegerStream implements VarStream {
 		return this.stream;
 	}
 
+	@Override
+	public boolean isFinite() {
+		return false;
+	}
+
 
 
 }

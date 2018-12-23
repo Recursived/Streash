@@ -33,7 +33,7 @@ public abstract class AbstractCommand implements Command {
 	@Override
 	public void displayCommandArgs() {
 		StringBuilder s = new StringBuilder();
-		s.append("********* Args of " +this.type + " ***********\n");
+		s.append("\n\n********* Args of " +this.type + " ***********\n");
 		for(Variable arg : args) {
 			s.append(arg.toString()+"\n");
 		}

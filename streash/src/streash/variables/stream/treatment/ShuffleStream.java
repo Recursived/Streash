@@ -14,7 +14,7 @@ public class ShuffleStream implements VarStream {
 	
 	private final  VarType type = VarType.ShuffleStream;
 	private final int rand;
-	private VarStream stream;
+	private final VarStream stream;
 	
 	public ShuffleStream(int rand, VarStream stream) {
 		this.rand = rand;
@@ -41,6 +41,11 @@ public class ShuffleStream implements VarStream {
 		List<Variable> lst = this.stream.getCopy().getStream().collect(Collectors.toList());
 		Collections.shuffle(lst, new Random(this.rand));
 		return lst.stream();
+	}
+
+	@Override
+	public boolean isFinite() {
+		return true;
 	}
 
 }

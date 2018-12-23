@@ -9,8 +9,8 @@ import streash.variables.Variable;
 public class InterStream implements VarStream {
 	
 	private final VarType type = VarType.InterStream;
-	private VarStream s;
-	private VarStream s1;
+	private final VarStream s;
+	private final VarStream s1;
 	
 	public InterStream(VarStream s, VarStream s1) {
 		this.s = s;
@@ -41,6 +41,11 @@ public class InterStream implements VarStream {
 						.getStream()
 						.anyMatch( vsv -> me.equals(vsv))
 						);
+	}
+
+	@Override
+	public boolean isFinite() {
+		return true;
 	}
 	
 }

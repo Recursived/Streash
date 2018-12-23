@@ -113,13 +113,11 @@ public class Rational extends Number implements Comparable<Rational>, Variable{
 
 	@Override
 	public int compareTo(Rational r) {
-		Double.compare(this.numerator.intValue() / this.denominator.intValue(), r.numerator.intValue() / r.denominator.intValue());
-		return 0;
+		return Double.compare(this.numerator.intValue() / this.denominator.intValue(), r.numerator.intValue() / r.denominator.intValue());
 	}
 
 	@Override
 	public double doubleValue() {
-		
 		return this.numerator.intValue() /(double) this.denominator.intValue();
 	}
 
@@ -148,6 +146,15 @@ public class Rational extends Number implements Comparable<Rational>, Variable{
 		return this.toString();
 	}
 	
+	public boolean isPositive() {
+		return this.doubleValue() > 0;
+	}
+	/*
+	 * 
+	 * Methodes statiques
+	 * 
+	 */
+	
 	public static Rational parseRational(String expr) {
 		String[] arr = expr.split("/");
 		if (arr.length > 2){
@@ -159,4 +166,10 @@ public class Rational extends Number implements Comparable<Rational>, Variable{
 		return new Rational(BigInteger.valueOf(Long.parseLong(arr[0])), BigInteger.valueOf(Long.parseLong(arr[1])));
 		
 	}
+	
+	public static int compare(Rational a, Rational b) {
+		return a.compareTo(b);
+	}
+	
+	
 }

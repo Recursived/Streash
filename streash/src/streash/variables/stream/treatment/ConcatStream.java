@@ -9,8 +9,8 @@ import streash.variables.Variable;
 public class ConcatStream implements VarStream {
 	
 	private final VarType type = VarType.ConcatStream;
-	private VarStream s;
-	private VarStream s1;
+	private final VarStream s;
+	private final VarStream s1;
 	
 	public ConcatStream(VarStream s, VarStream s1) {
 		this.s = s;
@@ -35,6 +35,11 @@ public class ConcatStream implements VarStream {
 	@Override
 	public Stream<Variable> getStream() {
 		return Stream.concat(this.s.getCopy().getStream(), this.s1.getCopy().getStream());
+	}
+
+	@Override
+	public boolean isFinite() {
+		return true;
 	}
 
 }

@@ -8,10 +8,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
 import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.SortedSet;
 import java.util.Stack;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import javax.swing.JFrame;
@@ -198,6 +203,7 @@ public class ConsoleFrame extends JFrame {
 
 		@Override
 		public void keyPressed(KeyEvent e) {
+			//***************** On calcule la comamande ***************//
 			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 				// Si la string n'est pas vide on fait le traitement
 				String line = ci.getText();
@@ -208,6 +214,8 @@ public class ConsoleFrame extends JFrame {
 						this.process(line, 0);
 					} else if (this.isTempAffectation(line)) {
 						this.process(line, 1);
+					} else if (this.isMetaCommand(line)) {
+						this.computeMetaCommand(line);
 					} else {
 						cp.append(">> Syntax error : incorrect affectation (my_var = ... or  1 2 <add>)\n");
 						ci.setText("");
@@ -277,6 +285,48 @@ public class ConsoleFrame extends JFrame {
 			
 		}
 		
+		private boolean isMetaCommand(String expr) {
+			return expr.matches("^/[a-z][a-z]* .*") || expr.matches("^/[a-z][a-z]*$");
+		}
+		
+		private void computeMetaCommand(String expr) {
+			String[] tokens = expr.split(" ");
+			if (expr.matches("^/printvar [a-zA-Z][a-zA-Z0-9]*$")) {
+				Variable v = vars.get(tokens[1]);
+				if (v == null) {
+					cp.append(">> Unknown variable name\n");
+				} else {
+					cp.append(tokens[0] + " : " + v.getConsoleString());
+				}
+				ci.setText("");
+			} else if (expr.matches("^/printvars$")) {
+				if (vars.size() > 0) {
+					for (Entry<String, Variable> v : vars.entrySet()) {
+						cp.append(v.getKey() + " : " + v.getValue().getConsoleString() + "\n ");
+					}
+				} else {
+					cp.append(">> No variable available for now\n");
+				}
+
+			} else if (expr.matches("^/printvars alpha$")) {
+				if (vars.size() > 0) {
+					SortedSet<String> varnames = new TreeSet<String>(vars.keySet());
+					for (String varname : varnames) {
+						cp.append(varname + " : " + vars.get(varname).getConsoleString() + "\n");
+					}
+				} else {
+					cp.append(">> No variable available for now\n");
+				}
+				
+			} else if (expr.matches("^/quit$")) {
+				ConsoleFrame.this.dispatchEvent(new WindowEvent(ConsoleFrame.this, WindowEvent.WINDOW_CLOSING));
+			} else {
+				throw new IllegalStateException(">> Unknown meta command");
+			}
+			ci.setText("");
+			
+		}
+		
 		private void putIntoCache(String command) {
 			if (mru.size() == 5) {
 				mru.set(0, command);
@@ -307,14 +357,16 @@ public class ConsoleFrame extends JFrame {
 							Command c  = CommandFactory.createCommand(token[i]);
 							// mauvaise ecriture de commande
 							if (c == null) {
-								cp.append("Unknown command : "+ token[i] +"\n");
+								cp.append(">> Unknown command : "+ token[i] +"\n");
+							} else {
+								int size = stack.size();
+								for (int j = 0; j < size; j++) {
+									c.takeArg(stack.pop());
+									
+								}
+								c.displayCommandArgs();
+								stack.push(c.process());
 							}
-							for (int j = 0; j < c.nbArgs(); j++) {
-								c.takeArg(stack.pop());
-								
-							}
-							c.displayCommandArgs();
-							stack.push(c.process());
 						} else {
 							cp.append(">> Syntax error : wrong token '"+token[i]+"'\n");
 							ci.setText("");
@@ -329,7 +381,6 @@ public class ConsoleFrame extends JFrame {
 				} else if ( type == 1) {
 					String[] token = line.split(" ");
 					for (int i = 0; i < token.length; i++) {
-						System.out.println(token[i]);
 						// si cest une ref à une autre var
 						if (this.isAlpha(token[i])) {
 							Variable a = vars.get(token[i]);
@@ -341,15 +392,16 @@ public class ConsoleFrame extends JFrame {
 						// si c'est une commande
 						} else if (this.isCommand(token[i])) {
 							Command c  = CommandFactory.createCommand(token[i]);
-							// mauvaise ecriture de commande
 							if (c == null) {
-								cp.append("Unknown command : "+ token[i] +"\n");
+								cp.append(">> Unknown command : "+ token[i] +"\n");
+							} else {
+								int size = stack.size();
+								for (int j = 0; j < size; j++) {
+									c.takeArg(stack.pop());
+								}
+								stack.push(c.process());
+								c.displayCommandArgs();
 							}
-							for (int j = 0; j < c.nbArgs(); j++) {
-								c.takeArg(stack.pop());
-							}
-							stack.push(c.process());
-							c.displayCommandArgs();
 						} else {
 							cp.append(">> Syntax error : wrong token '"+token[i]+"'\n");
 							ci.setText("");
@@ -364,19 +416,21 @@ public class ConsoleFrame extends JFrame {
 					}
 				}
 			} catch (RuntimeException e) {
-				if (e instanceof NumberFormatException) {
-					cp.append(">> Could not parse the string correctly, be careful with whitespaces "
-							+ "\n The format should be : "
-							+ "1 _ . _ <command> _ . _ .)"
-							+ "\n Zero whitespace at the begining and one after each elem");
-				} else if (e instanceof EmptyStackException) {
-					cp.append(">> Not enough args for this command");
-				} else {
-					cp.append(" >> " + e.getMessage() + "\n");
+				if(e.getMessage() != null) {
+					if (e instanceof NumberFormatException) {
+						cp.append(">> Could not parse the string correctly, be careful with whitespaces "
+								+ "\n The format should be : "
+								+ "1 _ . _ <command> _ . _ .)"
+								+ "\n Zero whitespace at the begining and one after each elem\n");
+					} else if (e instanceof EmptyStackException) {
+						cp.append(">> Not enough args for this command\n");
+					} else {
+						cp.append(">> " + e.getMessage() + "\n");
+					}
 				}
 				ci.setText("");
 				// debug
-				System.out.println(e);
+				System.out.println(e.getStackTrace().toString());
 			}
 		}
 		

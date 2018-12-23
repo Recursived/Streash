@@ -20,7 +20,7 @@ public class RandomCommand extends AbstractCommand{
 				Rational r2 = (Rational) arr[1];
 				Rational r3 = (Rational) arr[2];
 				if (r.isInteger() && r2.isInteger() && r3.isInteger()) {
-					return new RandomStream(r.intValue(), r2.intValue(), r3.intValue());
+					return new RandomStream(r3.intValue(), r2.intValue(), r.intValue());
 				} else {
 					throw new IllegalArgumentException("Arg for this command should be ints");
 				}

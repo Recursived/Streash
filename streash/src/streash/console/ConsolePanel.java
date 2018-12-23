@@ -1,11 +1,14 @@
 package streash.console;
 
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.text.Document;
-import javax.swing.text.StyledDocument;
 
 public class ConsolePanel extends JTextArea{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public ConsolePanel() {
 		super();
