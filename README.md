@@ -39,6 +39,15 @@ In this section, you will be given all the command you can use.
 * /printvars alpha : print all the vars in a alphabetical manner
 * /quit : quit the shell
 
+### Example(s)
+
+Here is/are examples of what you could write in the shell.
+
+```
+1 <integers> 0 10 <slice> <sum>
+# This give you the sum of all elements ranging from 0 to 10
+```
+
 
 ## Developer
 
