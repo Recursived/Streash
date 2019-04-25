@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This project is a java shell interpreting command written is *reverse polish notation*. You'll be able to find the command later in this tutorial.
+This project is a java shell interpreting command written in *reverse polish notation*. You'll be able to find the command later in this tutorial.
 
 ## User
 
