@@ -53,12 +53,12 @@ Here is/are examples of what you could write in the shell.
 
 ### Architecture of the project
 The project can be divided in two types of classes. On one side you have the data structures, on the other, you have the command.
-The variables are located in the directory *"variables"*. The commands are located in the *"commands"* directory.
+The variables are located in the *"variables"* directory. The commands are located in the *"commands"* directory.
 
 #### Overview
 
-All data structures are implementing the ***Variable*** interface. This interface has some sub interfaces such as VarStream which is meant to be used by stream data structure.
-All commands are extending the ***AbstractCommand*** class. The general behavior of a command is : created with empty ArrayList of args. Each time you encounter a arg you **add it** to the array and then you **process** the command to get the variable.
+All data structures are implementing the ***Variable*** interface. This interface has some sub interfaces such as VarStream which is meant to be used by stream-like data structure.
+All commands are extending the ***AbstractCommand*** class. The general behavior of a command is : create an empty ArrayList of args. Each time you encounter an arg you **add it** to the array and then you **process** the command to get the variable.
 
 
 #### Help us
